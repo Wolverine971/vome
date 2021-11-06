@@ -1,5 +1,74 @@
-.contact-info {
+.contact-form{
     display: grid;
+    grid-column-gap: 1em;
     grid-template-areas: 
-        "firstLabel lastLabel";
+        "contactTitle ."
+        "firstLabel lastLabel"
+        "firstInput lastInput"
+        "addressLabel ."
+        "addressInput addressInput"
+        "cityLabel ."
+        "cityInput cityInput"
+        "stateLabel zipcodeLabel"
+        "stateInput zipcodeInput"
+        ;
+    max-width: 600px;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.field-input {
+    margin-bottom: 2em;
+}
+
+.contact-title {
+    grid-area: contactTitle;
+}
+
+.first-name-label {
+    grid-area: firstLabel;
+}
+
+.first-name-input {
+    grid-area: firstInput
+}
+
+.last-name-label {
+    grid-area: lastLabel;
+}
+
+.last-name-input {
+    grid-area: lastInput;
+}
+
+.address-label {
+    grid-area: addressLabel;
+}
+
+.address-input {
+    grid-area: addressInput;
+}
+
+.city-label {
+    grid-area: cityLabel;
+}
+
+.city-input {
+    grid-area: cityInput;
+}
+
+.state-label {
+    grid-area: stateLabel;
+}
+
+.state-input {
+    grid-area: stateInput;
+}
+
+.zipcode-label {
+    grid-area: zipcodeLabel;
+}
+
+.zipcode-input {
+    grid-area: zipcodeInput;
 }

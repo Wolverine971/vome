@@ -1,25 +1,26 @@
 import React from 'react';
+import "./SignUpInfo.css"
 
 function SignUpInfo() {
   return (
     <div>
-      <form className="contact-info">
-        <h2>Contact Info</h2>
+      <form className="contact-form">
+        <h2 className="contact-title">Contact Info</h2>
 
-        <label>First Name</label>
-        <input type='text' />
+        <label className="first-name-label" htmlFor="firstName">First Name</label>
+        <input className="first-name-input field-input" id="firstName" type='text' />
 
-        <label>Last Name</label>
-        <input type='text' />
+        <label className="last-name-label" htmlFor="lastName">Last Name</label>
+        <input className="last-name-input field-input" id="lastName" type='text' />
 
-        <label>Address</label>
-        <input type='text' />
+        <label className="address-label" htmlFor="address">Address</label>
+        <input className="address-input field-input" id="address" type='text' />
 
-        <label>City</label>
-        <input type='text' />
+        <label className="city-label" for="city">City</label>
+        <input className="city-input field-input" id="city" type='text' />
 
-          <label for='state'>State</label>
-          <select id='state' name='state'>
+          <label className="state-label" for='state'>State</label>
+          <select className="state-input field-input" id='state' name='state'>
             <option value='---'>---</option>
             <option value='Alabama'>Alabama</option>
             <option value='Alaska'>Alaska</option>
@@ -80,8 +81,8 @@ function SignUpInfo() {
             <option value='Wyoming'>Wyoming</option>
           </select>
 
-        <label>Zipcode</label>
-        <input type='text' />
+        <label className="zipcode-label" htmlFor="zipcode">Zipcode</label>
+        <input className="zipcode-input field-input" type='text' id="zipcode" />
       </form>
     </div>
   );
