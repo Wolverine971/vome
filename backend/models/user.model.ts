@@ -1,6 +1,8 @@
-const mongoose = require('mongoose');
-const passportLocalMongoose = require('passport-local-mongoose');
-const { Schema } = mongoose;
+import {Schema, model, connect} from '..\mongoose';
+
+export interface User extends Document{
+
+}
 
 const userSchema = new Schema({
     first: {
@@ -13,7 +15,6 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        required: true,
         unique: true,
         required: [true, 'Must have an email']
     },
@@ -28,8 +29,3 @@ const userSchema = new Schema({
     }
 })
 
-userSchema.plugin(passportLocalMongoose);
-
-
-
-module.exports = mongoose.model('User', userSchema);
