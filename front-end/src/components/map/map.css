@@ -1,0 +1,9 @@
+.map-container {
+    height: calc(100vh - 250px);
+    width: calc(80vw - 500px);
+}
+
+.map-parent-container{
+    height: 100vh;
+    width: calc(80vw - 500px);
+}
