@@ -1,0 +1,5 @@
+.contact-info {
+    display: grid;
+    grid-template-areas: 
+        "firstLabel lastLabel";
+}

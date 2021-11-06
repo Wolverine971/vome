@@ -22,3 +22,9 @@
     margin-bottom: 3em;
     padding: 1em 1.75em;
 }
+
+.btn:hover,
+.btn:focus {
+    opacity: 80%;
+    cursor: pointer;
+}
