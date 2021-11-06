@@ -7,20 +7,20 @@ import express from "express";
 import { createServer } from "http";
 import mongoose from "mongoose";
 
-import { Resolvers } from "./resolvers/Resolvers";
-import { Types } from "./types/types";
+import { UserResolvers, UserTypes } from "./resolvers/users";
 
 mongoose.connect("mongodb://localhost:27017/vome", {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 });
 mongoose.set("debug", true);
 
 (async () => {
   const app = express();
   const server = new ApolloServer({
-    typeDefs: [Types],
-    resolvers: [Resolvers],
+    typeDefs: [UserTypes],
+    resolvers: [UserResolvers],
   });
   app.use(cors());
   app.use(bodyParser.json({ limit: "50mb" }));
