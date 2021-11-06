@@ -1,6 +1,8 @@
 import { IResolvers } from "graphql-tools";
 import { gql } from "apollo-server-express";
 import mongoose from "mongoose";
+import Veteran from '../models/veteran'
+
 const crypto = require("crypto");
 
 const Schema = mongoose.Schema;
@@ -12,6 +14,11 @@ export const User = mongoose.model(
     firstName: String,
     lastName: String,
     email: String!,
+    address: String,
+    city: String,
+    zip: Number,
+    skillcategory: String,
+    timeavailable: String,
     password: String!,
     tokenVersion: Number,
     confirmedUser: Boolean,
@@ -34,6 +41,8 @@ export const Admin = mongoose.model(
   })
 );
 
+
+
 export const UserResolvers: IResolvers = {
   Date: String,
   Map: Object,
@@ -43,6 +52,14 @@ export const UserResolvers: IResolvers = {
       const cursorParam = cursorId ? `id: { $gt: ${cursorId} }` : null;
       const u = await User.find({ cursorParam }).limit(10);
 
+      return {
+        users: u,
+        count: User.estimatedDocumentCount(),
+      };
+    },
+
+    getUsersByCity: async (_,{ city }) => {
+      const u = await User.find({ city }).limit(20)
       return {
         users: u,
         count: User.estimatedDocumentCount(),
@@ -70,10 +87,15 @@ export const UserResolvers: IResolvers = {
   },
 
   Mutation: {
-    createUser: async (_, { email, password }) => {
+    createUser: async (_, { email, password, address, city, zip, skillcategory, timeavailable }) => {
       const u = new User({
         email,
         password,
+        address,
+        city,
+        zip,
+        skillcategory,
+        timeavailable,
         tokenVersion: 0,
         confirmedUser: false,
         confirmationToken: crypto.randomBytes(20).toString("hex"),
@@ -219,6 +241,7 @@ export const UserTypes = gql`
   scalar Map
   type Query {
     users(cursorId: String): PaginatedUsers
+    getUsersByCity(city: String): PaginatedUsers
     getUserByEmail(email: String!): User
     getUserById(id: String!): User
     deleteUsers: Boolean
@@ -236,6 +259,11 @@ export const UserTypes = gql`
     lastName: String
     password: String
     email: String
+    address: String
+    city: String
+    zip: Number
+    skillcategory: String
+    timeavailable: String
     tokenVersion: Int
     confirmedUser: Boolean
     confirmationToken: String
@@ -254,7 +282,7 @@ export const UserTypes = gql`
   }
 
   type Mutation {
-    createUser(email: String!, password: String!): User!
+    createUser(email: String!, password: String!,address: String, city: String, zip: Number, skillcategory: String, timeavailable: String ): User!
     confirmUser(confirmationToken: String!): Boolean!
 
     updateUser(
@@ -274,3 +302,5 @@ export const UserTypes = gql`
     change(id: String!, type: String!, tag: String!): Boolean
   }
 `;
+
+
