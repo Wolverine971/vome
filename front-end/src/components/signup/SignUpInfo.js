@@ -45,7 +45,6 @@ function SignUpInfo() {
   const [signupMutation] = useMutation(Signup_MUTATION);
 
   function signup() {
-    debugger;
     signupMutation({
       variables: { firstName, lastName, address, city, state, zipCode, serviceName, category, description },
     }).then((result) => console.log(result));

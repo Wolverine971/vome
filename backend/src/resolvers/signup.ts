@@ -20,7 +20,6 @@ export const SignUpResolvers: IResolvers = {
         let resp: any = await axios.post(`http://open.mapquestapi.com/geocoding/v1/address?key=${process.env.GEOCODING_KEY}`,{
             location: `${address} ${city} ${state}, ${zipCode}`
         })
-        debugger
         if (resp && resp.data && resp.data.results[0]){
 
             let results = resp.data.results[0].locations[0]

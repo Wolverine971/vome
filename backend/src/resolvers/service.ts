@@ -8,7 +8,6 @@ export const ServiceResolvers: IResolvers = {
   Map: Object,
 
   Query: {
-
     getAllServices: async (_, { cursorId }) => {
       const cursorParam = cursorId ? `id: { $gt: ${cursorId} }` : null;
       const service = await Service.find({}).limit(10);
@@ -18,18 +17,20 @@ export const ServiceResolvers: IResolvers = {
         count: Service.estimatedDocumentCount(),
       };
     },
-
     getServicesInState: async (_, { state, cursorId }) => {
       const cursorParam = cursorId ? `id: { $gt: ${cursorId} }` : null;
       const services = await Service.find({ state, cursorParam }).limit(100);
-
       return {
         services: services,
         count: Service.find({ state }).estimatedDocumentCount(),
       };
     },
-  },
 
+    getStates: async (_, {}) => {
+      const states = await Service.find().distinct("state")
+      return states
+    },
+  },
 };
 
 export const ServiceTypes = gql`
@@ -37,6 +38,7 @@ export const ServiceTypes = gql`
 extend type Query {
     getAllServices(cursorId: String): PaginatedServices
     getServicesInState(state: String, cursorId: String): PaginatedServices
+    getStates: [String]
   }
   
   type PaginatedServices {
@@ -54,5 +56,9 @@ extend type Query {
     zipCode: String
     dateCreated: Date
     dateModified: Date
+  }
+
+  type States {
+    States: [String]
   }
 `;
