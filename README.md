@@ -10,17 +10,24 @@ https://nodejs.org/en/download/
 
 Local installation steps:
 1. Clone the repo
+```bash
 $ git clone https://github.com/Wolverine971/vome.git
+```
 2. CD into the vome folder
+```bash
 cd vome
+```
 3. Install the react app
+```bash
 $ npm install
+```
 4. Run the app.  
+```bash
 $ npm run start
 
 $ npm run build:dev
 $ npm run test
-
+```
 ## Usage
 Vome's interface is intuitive. Simply scroll around the map to locate services or select a particular state. Zoom in and out of the map using standard zoom controls. There is also an optional drop down menu provided to search for services by a particular state.  
 
