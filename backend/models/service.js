@@ -3,8 +3,7 @@ const { Schema } = mongoose;
 
 const serviceSchema = new Schema({
     id: {
-        type: String,
-        required: [true, 'Service must have an Id']
+        type: String
     },
     name: {
         type: String,
@@ -23,8 +22,7 @@ const serviceSchema = new Schema({
         required: [true, 'Service must have a coordinates']
     },
     address: {
-        type: String,
-        required: [true, 'Service must have a address']
+        type: String
     },
     city: {
         type: String,
@@ -35,8 +33,7 @@ const serviceSchema = new Schema({
         required: [true, 'Service must have a state']
     },
     zipCode: {
-        type: String,
-        required: [true, 'Service must have a zipCode']
+        type: String
     },
 
     dateCreated: {
