@@ -1,13 +1,17 @@
 import React from 'react';
+import { Link } from "react-router-dom"
 import './GiverSignUp.css';
 import SignUpInfo from './SignUpInfo';
 
 function GiverSignUp() {
   return (
     <div className='support-giver-sign-up'>
-        <div>
+        <div className="header">
+          <div>
             <h1>YOU CAN HELP VETERANS</h1>
             <p>Sign up to offer your services, or assistance, to veterans.</p>
+          </div>
+            <Link to="/seeker" className="btn">Looking for Services?</Link>
         </div>
 
       <SignUpInfo />

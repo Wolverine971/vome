@@ -3,6 +3,22 @@ body {
     color: #fff;
 }
 
-.select-state {
-    width: 200px;
+.support-sign-up {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 80%;
+    margin: 0 auto;
 }
+
+.support-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.giver-to-service {
+    align-self: flex-end;
+    margin: 0;
+}
+
