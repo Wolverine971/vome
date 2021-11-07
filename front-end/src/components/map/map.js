@@ -7,7 +7,9 @@ import './map.css'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGp3YXluZTMiLCJhIjoiY2t1b2Q2N2xtMmVsYTJ4bXh5MTVna2kyMiJ9.qs9ffyy-AcnWcLUgEJNO_w'
 
-export default function Map(){
+export default function Map(props){
+
+    const { selectedState } = props;
     const mapContainer = useRef(null)
     const map = useRef(null)
     const [lng, setLng] = useState(-82.0)
@@ -16,14 +18,13 @@ export default function Map(){
 
     useEffect(() => {
         if (map.current) return
-        
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/dark-v10',
             center: [lng, lat],
             zoom: zoom
         })
-    })
+    },[lat,lng, zoom])
 
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
@@ -32,7 +33,7 @@ export default function Map(){
             setLat(map.current.getCenter().lat.toFixed(4));
             setZoom(map.current.getZoom().toFixed(2));
         });
-    })
+    },[lat,lng, zoom])
     
     return (
         <div className="map-parent-container">

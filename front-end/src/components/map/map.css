@@ -5,5 +5,8 @@
 
 .map-parent-container{
     height: 100vh;
-    width: calc(80vw - 500px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
