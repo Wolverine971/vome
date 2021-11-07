@@ -45,7 +45,6 @@ function SignUpInfo() {
   const [signupMutation] = useMutation(Signup_MUTATION);
 
   function signup() {
-    debugger;
     signupMutation({
       variables: { firstName, lastName, address, city, state, zipCode, serviceName, category, description },
     }).then((result) => console.log(result));
@@ -220,7 +219,7 @@ function SignUpInfo() {
           onChange={(e) => setDescription(e.target.value)}
         />
       </form>
-      <button type="button" onClick={signup}>
+      <button type="button" onClick={signup} className="btn">
         Signup
       </button>
     </div>

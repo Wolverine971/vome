@@ -1,0 +1,52 @@
+.support-giver-sign-up {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.field-input {
+    margin-bottom: 2em;
+}
+
+/* .availability {
+    display: grid;
+    grid-template-areas: 
+        "availTitle ."
+        "categoryLabel ."
+        "categoryInput categoryInput"
+        "timeLabel ."
+        "timeInput timeInput";
+}
+
+.availability-header {
+    grid-area: availTitle;
+}
+
+.category-label {
+    grid-area: categoryLabel;
+}
+
+.category-input {
+    grid-area: categoryInput;
+}
+
+.time-label {
+    grid-area: timeLabel;
+}
+
+.time-input {
+    grid-area: timeInput;
+}
+
+.privacy-mode-on {
+    margin-right: 2em;
+}
+
+.signup-btn {
+    margin-top: 2em;
+    text-align: center;
+} */
