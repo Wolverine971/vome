@@ -12,7 +12,7 @@ function GiverSignUp() {
 
       <SignUpInfo />
 
-      <form className='availability'>
+      {/* <form className='availability'>
         <h2 className='availability-header'>Availability</h2>
         <label className='category-label'>Category </label>
         <select className='category-input field-input'>
@@ -46,7 +46,7 @@ function GiverSignUp() {
         <label htmlFor='privacy-mode-off'>Off</label>
       </form>
 
-      <button type="submit" className="signup-btn btn">Signup as Helper</button>
+      <button type="submit" className="signup-btn btn">Signup as Helper</button> */}
     </div>
   );
 }

@@ -5,14 +5,14 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .field-input {
     margin-bottom: 2em;
 }
 
-.availability {
+/* .availability {
     display: grid;
     grid-template-areas: 
         "availTitle ."
@@ -49,4 +49,4 @@
 .signup-btn {
     margin-top: 2em;
     text-align: center;
-}
+} */

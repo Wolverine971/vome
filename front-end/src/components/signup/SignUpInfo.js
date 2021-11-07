@@ -219,7 +219,7 @@ function SignUpInfo() {
           onChange={(e) => setDescription(e.target.value)}
         />
       </form>
-      <button type="button" onClick={signup}>
+      <button type="button" onClick={signup} className="btn">
         Signup
       </button>
     </div>
