@@ -2,6 +2,10 @@
     max-width: 600px;
     margin: 0 auto;
     text-align: left;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .field-input {
@@ -40,4 +44,9 @@
 
 .privacy-mode-on {
     margin-right: 2em;
+}
+
+.signup-btn {
+    margin-top: 2em;
+    text-align: center;
 }
