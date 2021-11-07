@@ -8,8 +8,16 @@ const mbxGeocode = require('@mapbox/mapbox-sdk/services/geocoding')
 const baseClient = mbxClient({ accessToken: mapBoxKey });
 const geoService = mbxGeocode(baseClient);
 const vamedcenters = require('./vamedcenters')
+const {stateAbbreviations,stateNames} = require('./states')
 
-
+function convertStateAbbreviated(abbreviation){
+    for (let i=0; i<stateAbbreviations.length;i++){
+        if (stateAbbreviations[i]===abbreviation){
+            return stateNames[i]
+        }
+    }
+    return abbreviation;
+}
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -42,6 +50,7 @@ const seedDB = async () => {
             let latlon = await getLatLon(vamedcenters[i][12])
             let lon = latlon[0]
             let lat = latlon[1] 
+            let stateName = convertStateAbbreviated(vamedcenters[i][11])
             let service = new Service({
                 name: vamedcenters[i][8],
                 category: "VA Center",
@@ -49,7 +58,7 @@ const seedDB = async () => {
                 coordinates: [lat,lon],
                 address: vamedcenters[i][14],
                 city: vamedcenters[i][10],
-                state: vamedcenters[i][11],
+                state: stateName,
                 zipCode: vamedcenters[i][12],
                 dateCreated: new Date(),
                 dateModified: new Date(),
