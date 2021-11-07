@@ -4,11 +4,14 @@ import "mapbox-gl/dist/mapbox-gl.css";
 // import env from "react-dotenv";
 import axios from "axios";
 import "./map.css";
-import * as L from "leaflet"
+import * as L from "leaflet";
+
+import { client } from "../../apollo";
+import { gql } from "@apollo/client";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZGp3YXluZTMiLCJhIjoiY2t1b2Q2N2xtMmVsYTJ4bXh5MTVna2kyMiJ9.qs9ffyy-AcnWcLUgEJNO_w";
 
-export default function Map(props) {
+const Map = (props) => {
   const { selectedState } = props;
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -17,28 +20,44 @@ export default function Map(props) {
   const [zoom, setZoom] = useState(9);
 
   useEffect(() => {
-    if(selectedState){
-        let json = window.localStorage.getItem(selectedState);
-        if (json) {
+    if (selectedState) {
+      let json = window.localStorage.getItem(selectedState);
+      if (json) {
         console.log(json);
-        let parsedJSON = JSON.parse(json)
-        var polygon = L.polygon(recurseArr(parsedJSON.features[0].geometry.coordinates), {color: 'red'}).addTo(map.current);
-            map.current.fitBounds(polygon.getBounds());
+        let parsedJSON = JSON.parse(json);
+        var polygon = L.polygon(
+          recurseArr(parsedJSON.features[0].geometry.coordinates),
+          { color: "red", name: selectedState }
+        ).addTo(map.current);
+        map.current.fitBounds(polygon.getBounds());
+        polygon.on("click", function (e) {
+          GetServices(e);
+        });
         // load state on map
-        } else if(selectedState) {
+      } else {
         // go get it
         axios
-            .get(
+          .get(
             `https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/0/query?where=&text=${selectedState}&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&queryByDistance=&returnExtentsOnly=false&datumTransformation=&parameterValues=&rangeValues=&f=geojson`
-            )
-            .then((resp) => {
-                if(resp && resp.data)
-            window.localStorage.setItem(selectedState, JSON.stringify(resp.data));
-            var polygon = L.polygon(recurseArr(resp.data.features[0].geometry.coordinates), {color: 'red'}).addTo(map.current);
-            map.current.fitBounds(polygon.getBounds());
+          )
+          .then((resp) => {
+            if (resp && resp.data) {
+              window.localStorage.setItem(
+                selectedState,
+                JSON.stringify(resp.data)
+              );
+              var polygon = L.polygon(
+                recurseArr(resp.data.features[0].geometry.coordinates),
+                { color: "red", name: selectedState }
+              ).addTo(map.current);
+              map.current.fitBounds(polygon.getBounds());
 
-            });
-        }
+              polygon.on("click", function (e) {
+                GetServices(e);
+              });
+            }
+          });
+      }
     }
   }, [selectedState]);
 
@@ -57,7 +76,8 @@ export default function Map(props) {
         id: "mapbox/dark-v10", // "mapbox/streets-v11",
         tileSize: 512,
         zoomOffset: -1,
-        accessToken: "pk.eyJ1IjoiZGp3YXluZTMiLCJhIjoiY2t1b2Q2N2xtMmVsYTJ4bXh5MTVna2kyMiJ9.qs9ffyy-AcnWcLUgEJNO_w",
+        accessToken:
+          "pk.eyJ1IjoiZGp3YXluZTMiLCJhIjoiY2t1b2Q2N2xtMmVsYTJ4bXh5MTVna2kyMiJ9.qs9ffyy-AcnWcLUgEJNO_w",
       }
     ).addTo(map.current);
   }, [lat, lng, zoom]);
@@ -80,14 +100,60 @@ export default function Map(props) {
     );
   }
 
-  const recurseArr = (newArr) => {
+  function recurseArr(newArr) {
     return newArr.map((item) => {
       if (item.length === 2) {
-        return [item[1], item[0]]
+        return [item[1], item[0]];
       } else {
-        return recurseArr(item)
+        return recurseArr(item);
       }
-    })
+    });
+  }
+
+  function GetServices(e) {
+    client
+      .query({
+        query: gql`
+          query GetServicesInState($state: String, $cursorId: String) {
+            getServicesInState(state: $state, cursorId: $cursorId) {
+              services {
+                name
+                category
+                description
+                coordinates
+                address
+                city
+                state
+                zipCode
+              }
+              count
+            }
+          }
+        `,
+        variables: {
+          state: e.target.options.name,
+          cursorId: "",
+        },
+      })
+      .then((result) => {
+        console.log(result);
+        if (
+          result &&
+          result.data &&
+          result.data.getServicesInState &&
+          result.data.getServicesInState.services
+        ) {
+          result.data.getServicesInState.services.forEach((service) => {
+            let marker = L.marker(service.coordinates, {
+              title: service.name,
+            //   icon: service.category,
+            }).addTo(map.current);
+            marker.on("click", function (e) {
+              console.log(e);
+            });
+          });
+        }
+      });
   }
 
   return (
@@ -103,4 +169,6 @@ export default function Map(props) {
       ></div>
     </div>
   );
-}
+};
+
+export default Map;
