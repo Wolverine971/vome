@@ -11,6 +11,10 @@
         "cityInput cityInput"
         "stateLabel zipcodeLabel"
         "stateInput zipcodeInput"
+        "service ."
+        "serviceLabel serviceInput"
+        "categoryLabel categoryInput"
+        "descriptionLabel descriptionInput"
         ;
     max-width: 600px;
     text-align: left;
@@ -71,4 +75,31 @@
 
 .zipcode-input {
     grid-area: zipcodeInput;
+}
+
+.service {
+    grid-area: service;
+}
+
+
+.service-label {
+    grid-area: serviceLabel;
+}
+
+.service-input {
+    grid-area: serviceInput;
+}
+.category-label {
+    grid-area: categoryLabel;
+}
+
+.category-input {
+    grid-area: categoryInput;
+}
+.description-label {
+    grid-area: descriptionLabel;
+}
+
+.description-input {
+    grid-area: descriptionInput;
 }
