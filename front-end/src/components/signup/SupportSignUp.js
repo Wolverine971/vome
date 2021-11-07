@@ -12,7 +12,6 @@ function SupportSignUp() {
             <h1>Veterans Find Assistance</h1>
             <h2 >Search by Category, State, City to see available services</h2>
             <MapNav setterFunc={setSelectedState}  />
-
             <Map selectedState={selectedState}/>
         </div>
     )
