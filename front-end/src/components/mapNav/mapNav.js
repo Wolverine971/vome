@@ -13,7 +13,7 @@ const GETSTATES = gql`
 export default function Map(props) {
   const { setterFunc } = props;
   const [selectedState, setSelectedState] = useState("");
-  const [availableStates, setSvailableStates] = useState([]);
+  const [availableStates, setSvailableStates] = useState(["Select State"]);
 
   const { data } = useQuery(GETSTATES);
 
@@ -38,7 +38,7 @@ export default function Map(props) {
           name="selectedState"
           value={selectedState}
           onChange={(e) => setSelectedStateVal(e.target.value)}
-        >
+          >
           {availableStates.map((state) => {
             return (
               <option value={state} key={state}>
