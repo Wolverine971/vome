@@ -27,26 +27,42 @@ export const ServiceResolvers: IResolvers = {
     },
 
     getStates: async (_, {}) => {
-      const states = await Service.find().distinct("state")
-      return states
+      const states = await Service.find().distinct("state");
+      return states;
+    },
+    deleteAllServices: async (_, {}) => {
+      const states = await Service.deleteMany({});
+      return true;
+    },
+  },
+
+  Mutation: {
+    deleteServiceById: async (_, { id }) => {
+      const b = await Service.deleteOne({ id });
+      if (b) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
 
 export const ServiceTypes = gql`
-
-extend type Query {
+  extend type Query {
     getAllServices(cursorId: String): PaginatedServices
     getServicesInState(state: String, cursorId: String): PaginatedServices
     getStates: [String]
+    deleteAllServices: Boolean
   }
-  
+
   type PaginatedServices {
     services: [Service]
     count: Int
   }
   type Service {
-    name: String,
+    id: String
+    name: String
     category: String
     description: String
     coordinates: [String]
@@ -60,5 +76,9 @@ extend type Query {
 
   type States {
     States: [String]
+  }
+
+  extend type Mutation {
+    deleteServiceById(id: String): Boolean
   }
 `;
