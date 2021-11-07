@@ -1,7 +1,7 @@
 import { IResolvers } from "graphql-tools";
 import { gql } from "apollo-server-express";
 import mongoose from "mongoose";
-import Veteran from '../models/veteran'
+
 
 const crypto = require("crypto");
 
@@ -261,7 +261,7 @@ export const UserTypes = gql`
     email: String
     address: String
     city: String
-    zip: Number
+    zip: Int
     skillcategory: String
     timeavailable: String
     tokenVersion: Int
@@ -282,7 +282,7 @@ export const UserTypes = gql`
   }
 
   type Mutation {
-    createUser(email: String!, password: String!,address: String, city: String, zip: Number, skillcategory: String, timeavailable: String ): User!
+    createUser(email: String!, password: String!,address: String, city: String, zip: Int, skillcategory: String, timeavailable: String ): User!
     confirmUser(confirmationToken: String!): Boolean!
 
     updateUser(
