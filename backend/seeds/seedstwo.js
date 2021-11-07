@@ -8,6 +8,7 @@ const mbxGeocode = require('@mapbox/mapbox-sdk/services/geocoding')
 const baseClient = mbxClient({ accessToken: mapBoxKey });
 const geoService = mbxGeocode(baseClient);
 const vamedcenters = require('./vamedcenters')
+const {stateAbbreviations,stateNames} = require('./states')
 
 const stateAbreviations ={
     "AL": "Alabama",
@@ -102,6 +103,7 @@ const seedDB = async () => {
             let latlon = await getLatLon(vamedcenters[i][12])
             let lon = latlon[0]
             let lat = latlon[1] 
+            let stateName = convertStateAbbreviated(vamedcenters[i][11])
             let service = new Service({
                 name: vamedcenters[i][8],
                 category: "VA Center",
