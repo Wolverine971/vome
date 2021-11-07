@@ -8,9 +8,12 @@ import * as L from "leaflet";
 
 import { client } from "../../apollo";
 import { gql } from "@apollo/client";
+
+  import house from "../../icons/house.svg"
+  
+  import food from "../../icons/food.svg"
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZGp3YXluZTMiLCJhIjoiY2t1b2Q2N2xtMmVsYTJ4bXh5MTVna2kyMiJ9.qs9ffyy-AcnWcLUgEJNO_w";
-
 const Map = (props) => {
   const { selectedState } = props;
   const mapContainer = useRef(null);
@@ -143,11 +146,23 @@ const Map = (props) => {
           result.data.getServicesInState &&
           result.data.getServicesInState.services
         ) {
+            let houseIcon = L.icon({
+                iconUrl: house,
+                iconSize: 40
+              })
+              let foodIcon = L.icon({
+                iconUrl: food,
+                iconSize: 30,
+                shadowSize: [68, 95]
+              })
           result.data.getServicesInState.services.forEach((service) => {
+              
             let marker = L.marker(service.coordinates, {
               title: service.name,
-            //   icon: service.category,
-            }).addTo(map.current);
+              icon: service.category === "Food" ? foodIcon : houseIcon,
+            }).bindPopup(`<div class="card card-1"><h1>${service.name}</h1><h2>${service.description}</h2><h3>Address: ${service.address} </h3></div>`)
+            
+            .addTo(map.current);
             marker.on("click", function (e) {
               console.log(e);
             });
