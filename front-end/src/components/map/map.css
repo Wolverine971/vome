@@ -1,12 +1,42 @@
 .map-container {
-    height: 65vh;
-    width: 80vw;
+  height: 65vh;
+  width: 80vw;
 }
 
-.map-parent-container{
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.map-parent-container {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.leaflet-popup {
+  border-radius: 20px;
+  background: rgb(224, 224, 224);
+  box-shadow: rgb(80 17 38) 20px 20px 60px, rgb(108 23 52) -20px -20px 60px;
+}
+
+.leaflet-popup-content-wrapper{
+    background: #5e142d;
+    color: #fdfdfd;
+    
+}
+
+.card-title{
     align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .0125em;
+    line-height: 2rem;
+    word-break: break-all;
+}
+
+.card-subtitle{
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.375rem;
+    letter-spacing: .0071428571em;
 }

@@ -1,0 +1,13 @@
+
+<svg 
+ xmlns="http://www.w3.org/2000/svg"
+ height="100" width="100">
+
+<!-- <g> -->
+ <rect x="0.5" y="0.5" width="100" height="100"
+  stroke-width="3" fill="blue"/>
+   <text x="3"  y="75" fill="white" font-size="5rem" >V</text>
+  <text x="45" y="75" fill="white" font-size="5rem" >A</text>
+<!-- </g> -->
+
+</svg>

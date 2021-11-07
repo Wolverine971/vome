@@ -9,12 +9,21 @@ import * as L from "leaflet";
 import { client } from "../../apollo";
 import { gql } from "@apollo/client";
 
-  import house from "../../icons/house.svg"
-  
-  import food from "../../icons/food.svg"
-mapboxgl.accessToken =
+import house from "../../icons/house2.svg";
+import food from "../../icons/food.svg";
+
+import crayon from "../../icons/crayons.svg";
+import VA from "../../icons/va.svg";
+
+require("dotenv").config();
+// const key = process.env.MAP_KEY;
+const key =
   "pk.eyJ1IjoiZGp3YXluZTMiLCJhIjoiY2t1b2Q2N2xtMmVsYTJ4bXh5MTVna2kyMiJ9.qs9ffyy-AcnWcLUgEJNO_w";
+console.log(key);
+mapboxgl.accessToken = key;
 const Map = (props) => {
+  //     const key2 = process.env.MAP_KEY;
+  // console.log(key2)
   const { selectedState } = props;
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -22,15 +31,29 @@ const Map = (props) => {
   const [lat, setLat] = useState(40.35);
   const [zoom, setZoom] = useState(9);
 
+  const houseIcon = L.icon({
+    iconUrl: house,
+    iconSize: 40,
+  });
+  const foodIcon = L.icon({
+    iconUrl: crayon,
+    iconSize: 30,
+    shadowSize: [68, 95],
+  });
+  const VAIcon = L.icon({
+    iconUrl: VA,
+    iconSize: 30,
+    shadowSize: [68, 95],
+  });
+
   useEffect(() => {
     if (selectedState) {
       let json = window.localStorage.getItem(selectedState);
       if (json) {
-        console.log(json);
         let parsedJSON = JSON.parse(json);
         var polygon = L.polygon(
           recurseArr(parsedJSON.features[0].geometry.coordinates),
-          { color: "red", name: selectedState }
+          { color: "#5e142d", name: selectedState }
         ).addTo(map.current);
         map.current.fitBounds(polygon.getBounds());
         polygon.on("click", function (e) {
@@ -45,13 +68,18 @@ const Map = (props) => {
           )
           .then((resp) => {
             if (resp && resp.data) {
-              window.localStorage.setItem(
-                selectedState,
-                JSON.stringify(resp.data)
-              );
+              try{
+                window.localStorage.setItem(
+                  selectedState,
+                  JSON.stringify(resp.data)
+                );
+              }
+              catch(e){
+                console.log(e)
+              }
               var polygon = L.polygon(
                 recurseArr(resp.data.features[0].geometry.coordinates),
-                { color: "red", name: selectedState }
+                { color: "#5e142d", name: selectedState }
               ).addTo(map.current);
               map.current.fitBounds(polygon.getBounds());
 
@@ -79,8 +107,7 @@ const Map = (props) => {
         id: "mapbox/dark-v10", // "mapbox/streets-v11",
         tileSize: 512,
         zoomOffset: -1,
-        accessToken:
-          "pk.eyJ1IjoiZGp3YXluZTMiLCJhIjoiY2t1b2Q2N2xtMmVsYTJ4bXh5MTVna2kyMiJ9.qs9ffyy-AcnWcLUgEJNO_w",
+        accessToken: key,
       }
     ).addTo(map.current);
   }, [lat, lng, zoom]);
@@ -113,13 +140,14 @@ const Map = (props) => {
     });
   }
 
-  function GetServices(e) {
+  async function GetServices(e) {
     client
       .query({
         query: gql`
           query GetServicesInState($state: String, $cursorId: String) {
             getServicesInState(state: $state, cursorId: $cursorId) {
               services {
+                  id
                 name
                 category
                 description
@@ -138,37 +166,54 @@ const Map = (props) => {
           cursorId: "",
         },
       })
-      .then((result) => {
+      .then(async(result) => {
         console.log(result);
         if (
-          result &&
-          result.data &&
-          result.data.getServicesInState &&
-          result.data.getServicesInState.services
+          result
         ) {
-            let houseIcon = L.icon({
-                iconUrl: house,
-                iconSize: 40
+          console.log(result.data.getServicesInState.services)
+          
+          let markerPromises = []
+          let servicesArr = result.data.getServicesInState.services
+          // servicesArr.forEach((service) => {
+
+            for (let i = 0; i < servicesArr.length; i++) { 
+              let service = servicesArr[i]
+              let marker = L.marker(service.coordinates, {
+                title: service.name,
+                icon: service.category === "VA Center" ? VAIcon : (service.category === "Food") ? foodIcon : houseIcon,
               })
-              let foodIcon = L.icon({
-                iconUrl: food,
-                iconSize: 30,
-                shadowSize: [68, 95]
-              })
-          result.data.getServicesInState.services.forEach((service) => {
-              
-            let marker = L.marker(service.coordinates, {
-              title: service.name,
-              icon: service.category === "Food" ? foodIcon : houseIcon,
-            }).bindPopup(`<div class="card card-1"><h1>${service.name}</h1><h2>${service.description}</h2><h3>Address: ${service.address} </h3></div>`)
-            
-            .addTo(map.current);
-            marker.on("click", function (e) {
-              console.log(e);
-            });
-          });
+                .bindPopup(
+                  `<div class="card card-1"><h1 class="card-title">${service.name}</h1><h2 class="card-subtitle">${service.description}</h2><h3>${service.address}, ${service.city}, ${service.state} </h3>
+                  <div>
+                  
+                  </div>
+                  </div>`
+                  // add delete button if we need to delete some items
+                  // <button class="btn" type="button" onClick="deleteItem(event)" id="${service.id}">Delete</button>
+
+                )
+                .addTo(map.current)
+                // markerPromises.push(marker)
+                
+
+                
+              marker.on("click", function (e) {
+                console.log(e);
+              });
+            }
+          // });
+          // Promise.all(markerPromises).then(createdMarkers=>{
+          //   createdMarkers.forEach(marker=>{
+          //     marker.addTo(map.current);
+          //   })
+          // })
         }
       });
+  }
+
+  function deleteItem(e){
+      console.log(e)
   }
 
   return (
