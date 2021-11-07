@@ -8,6 +8,10 @@ import { createServer } from "http";
 import mongoose from "mongoose";
 
 import { UserResolvers, UserTypes } from "./resolvers/users";
+import { ServiceResolvers, ServiceTypes } from "./resolvers/service";
+
+import { SignUpResolvers, SignUpTypes } from "./resolvers/signup";
+
 
 mongoose.connect("mongodb://localhost:27017/vome", {
   useNewUrlParser: true,
@@ -19,8 +23,8 @@ mongoose.set("debug", true);
 (async () => {
   const app = express();
   const server = new ApolloServer({
-    typeDefs: [UserTypes],
-    resolvers: [UserResolvers],
+    typeDefs: [UserTypes, ServiceTypes, SignUpTypes],
+    resolvers: [UserResolvers, ServiceResolvers, SignUpResolvers],
   });
   app.use(cors());
   app.use(bodyParser.json({ limit: "50mb" }));

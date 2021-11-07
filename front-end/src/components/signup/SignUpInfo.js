@@ -1,11 +1,31 @@
 import React from "react";
 import "./SignUpInfo.css";
 import { useState } from "react";
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation } from "@apollo/client";
 
 const Signup_MUTATION = gql`
-  mutation Signup($firstName: String, $lastName: String, $address: String, $city: String, $state: String, $zipCode: String) {
-    signUp(firstName: $firstName, lastName: $lastName, address: $address, city: $city, state: $state, zipCode: $zipCode) {
+  mutation Signup(
+    $firstName: String
+    $lastName: String
+    $address: String
+    $city: String
+    $state: String
+    $zipCode: String
+    $serviceName: String 
+    $category: String 
+    $description: String
+  ) {
+    signUp(
+      firstName: $firstName
+      lastName: $lastName
+      address: $address
+      city: $city
+      state: $state
+      zipCode: $zipCode
+      serviceName: $serviceName 
+      category: $category 
+      description: $description
+    ) {
       id
     }
   }
@@ -18,13 +38,16 @@ function SignUpInfo() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [serviceName, setServiceName] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
 
   const [signupMutation] = useMutation(Signup_MUTATION);
 
   function signup() {
-  debugger
-  signupMutation({ variables: { firstName, lastName, address, city, state, zipCode } })
-  .then((result) => console.log(result));
+    signupMutation({
+      variables: { firstName, lastName, address, city, state, zipCode, serviceName, category, description },
+    }).then((result) => console.log(result));
   }
 
   return (
@@ -156,8 +179,49 @@ function SignUpInfo() {
           value={zipCode}
           onChange={(e) => setZipCode(e.target.value)}
         />
+
+        <h2 className="service">Service</h2>
+
+        <label className="service-label" htmlFor="serviceName">
+          Name of Service
+        </label>
+        <input
+          className="service-input field-input"
+          type="text"
+          id="serviceName"
+          value={serviceName}
+          onChange={(e) => setServiceName(e.target.value)}
+        />
+
+        <label className="category-label" for="category">
+          Category
+        </label>
+        <select
+          className="category-input field-input"
+          id="category"
+          name="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="---">---</option>
+          <option value="Food">Food</option>
+          <option value="Shelter">Shelter</option>
+        </select>
+
+        <label className="description-label" htmlFor="description">
+          Description
+        </label>
+        <input
+          className="description-input field-input"
+          type="text"
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
       </form>
-      <button type="button" onClick={signup}>Signup</button>
+      <button type="button" onClick={signup}>
+        Signup
+      </button>
     </div>
   );
 }
