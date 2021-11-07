@@ -5,10 +5,10 @@ const mbxGeocode = require('@mapbox/mapbox-sdk/services/geocoding')
 const baseClient = mbxClient({ accessToken: mapBoxKey });
 const geoService = mbxGeocode(baseClient);
 
-async function getLatLonState(city){
+async function getLatLonState(zip){
     let match = ""
     await geoService.forwardGeocode({
-        query: `${city}, California`,
+        query: zip,
         limit: 2
       })
         .send()
@@ -22,7 +22,7 @@ async function getLatLonState(city){
     console.log(lat)
 }
 
-getLatLonState("San Diego")
+getLatLonState("43230")
 
 
 
