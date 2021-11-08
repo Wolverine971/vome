@@ -8,26 +8,54 @@ https://docs.mongodb.com/guides/server/install/
 To download nodejs, go here:
 https://nodejs.org/en/download/
 
-Local installation steps:
-1. Clone the repo
+## Local installation steps:
 ```bash
 $ git clone https://github.com/Wolverine971/vome.git
-```
-2. CD into the vome folder
-```bash
 cd vome
 ```
-3. Install the react app
+### Frontend
+1. Install the react app
 ```bash
+cd front-end
 $ npm install
 ```
-4. Run the app.  
+2. Run the Frontend.  
 ```bash
 $ npm run start
-
 $ npm run build:dev
 $ npm run test
 ```
+
+### Backend
+1. Get Graphql Api up and running
+```bash
+cd backend
+$ npm install
+```
+2. Run the Backend.  
+```bash
+$ npm run start
+$ npm run build:dev
+```
+
+### Seed Data in Mongodb
+1. Install the react app
+```bash
+cd backend/seed
+```
+Need .env file mapbox api key
+
+GEO_KEY=mapboxApiKkey
+
+2. Seed random Veteran Services in California.  
+```bash
+$ node seed.js
+```
+3. Seed locations of VA Centers in the States.  
+```bash
+$ node seedtwo.js
+```
+
 ## Usage
 Vome's interface is intuitive. Simply scroll around the map to locate services or select a particular state. Zoom in and out of the map using standard zoom controls. There is also an optional drop down menu provided to search for services by a particular state.  
 
