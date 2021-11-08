@@ -103,7 +103,6 @@ const seedDB = async () => {
             let latlon = await getLatLon(vamedcenters[i][12])
             let lon = latlon[0]
             let lat = latlon[1] 
-            let stateName = convertStateAbbreviated(vamedcenters[i][11])
             let service = new Service({
                 name: vamedcenters[i][8],
                 category: "VA Center",
@@ -116,6 +115,7 @@ const seedDB = async () => {
                 dateCreated: new Date(),
                 dateModified: new Date(),
             });
+            service.id = service._id;
             await service.save();
         }
     }

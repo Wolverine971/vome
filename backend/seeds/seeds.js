@@ -259,6 +259,7 @@ const seedDB = async () => {
             dateCreated: new Date(),
             dateModified: new Date(),
         });
+        service.id = service._id;
         await service.save();
     }
 }

@@ -1,6 +1,6 @@
-import { IResolvers } from "graphql-tools";
 import { gql } from "apollo-server-express";
-const crypto = require("crypto");
+import { IResolvers } from "graphql-tools";
+
 import Service from "../../models/service";
 
 export const ServiceResolvers: IResolvers = {
