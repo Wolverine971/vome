@@ -1,7 +1,8 @@
-import React from "react";
-import "./SignUpInfo.css";
-import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import React from "react";
+import { useState } from "react";
+
+import "./SignUpInfo.css";
 
 const Signup_MUTATION = gql`
   mutation Signup(
@@ -11,8 +12,8 @@ const Signup_MUTATION = gql`
     $city: String
     $state: String
     $zipCode: String
-    $serviceName: String 
-    $category: String 
+    $serviceName: String
+    $category: String
     $description: String
   ) {
     signUp(
@@ -22,8 +23,8 @@ const Signup_MUTATION = gql`
       city: $city
       state: $state
       zipCode: $zipCode
-      serviceName: $serviceName 
-      category: $category 
+      serviceName: $serviceName
+      category: $category
       description: $description
     ) {
       id
@@ -46,7 +47,17 @@ function SignUpInfo() {
 
   function signup() {
     signupMutation({
-      variables: { firstName, lastName, address, city, state, zipCode, serviceName, category, description },
+      variables: {
+        firstName,
+        lastName,
+        address,
+        city,
+        state,
+        zipCode,
+        serviceName,
+        category,
+        description,
+      },
     }).then((result) => console.log(result));
   }
 
@@ -88,7 +99,7 @@ function SignUpInfo() {
           onChange={(e) => setAddress(e.target.value)}
         />
 
-        <label className="city-label" for="city">
+        <label className="city-label" htmlFor="city">
           City
         </label>
         <input
@@ -99,7 +110,7 @@ function SignUpInfo() {
           onChange={(e) => setCity(e.target.value)}
         />
 
-        <label className="state-label" for="state">
+        <label className="state-label" htmlFor="state">
           State
         </label>
         <select
@@ -193,7 +204,7 @@ function SignUpInfo() {
           onChange={(e) => setServiceName(e.target.value)}
         />
 
-        <label className="category-label" for="category">
+        <label className="category-label" htmlFor="category">
           Category
         </label>
         <select

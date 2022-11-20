@@ -3,11 +3,11 @@ import { gql } from "@apollo/client";
 import axios from "axios";
 import * as L from "leaflet";
 import mapboxgl from "mapbox-gl";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { client } from "../../apollo";
 import crayon from "../../icons/crayons.svg";
-import food from "../../icons/food.svg";
+// import food from "../../icons/food.svg";
 import house from "../../icons/house2.svg";
 import VA from "../../icons/va.svg";
 
@@ -42,6 +42,87 @@ const Map = (props) => {
     iconSize: 30,
     shadowSize: [68, 95],
   });
+  const recurseArr = useCallback((newArr) => {
+    return newArr.map((item) => {
+      if (item.length === 2) {
+        return [item[1], item[0]];
+      } else {
+        return recurseArr(item);
+      }
+    });
+  }, []);
+
+  const getServices = useCallback(
+    (e) => {
+      client
+        .query({
+          query: gql`
+            query GetServicesInState($state: String, $cursorId: String) {
+              getServicesInState(state: $state, cursorId: $cursorId) {
+                services {
+                  id
+                  name
+                  category
+                  description
+                  coordinates
+                  address
+                  city
+                  state
+                  zipCode
+                }
+                count
+              }
+            }
+          `,
+          variables: {
+            state: e.target.options.name,
+            cursorId: "",
+          },
+        })
+        .then(async (result) => {
+          console.log(result);
+          if (result) {
+            let servicesArr = result.data.getServicesInState.services;
+            // servicesArr.forEach((service) => {
+
+            for (let i = 0; i < servicesArr.length; i++) {
+              let service = servicesArr[i];
+              let marker = L.marker(service.coordinates, {
+                title: service.name,
+                icon:
+                  service.category === "VA Center"
+                    ? VAIcon
+                    : service.category === "Food"
+                    ? foodIcon
+                    : houseIcon,
+              })
+                .bindPopup(
+                  `<div class="card card-1"><h1 class="card-title">${service.name}</h1><h2 class="card-subtitle">${service.description}</h2><h3>${service.address}, ${service.city}, ${service.state} </h3>
+                  <div>
+                  
+                  </div>
+                  </div>`
+                  // add delete button if we need to delete some items
+                  // <button class="btn" type="button" onClick="deleteItem(event)" id="${service.id}">Delete</button>
+                )
+                .addTo(map.current);
+              // markerPromises.push(marker)
+
+              marker.on("click", function (e) {
+                console.log(e);
+              });
+            }
+            // });
+            // Promise.all(markerPromises).then(createdMarkers=>{
+            //   createdMarkers.forEach(marker=>{
+            //     marker.addTo(map.current);
+            //   })
+            // })
+          }
+        });
+    },
+    [VAIcon, foodIcon, houseIcon]
+  );
 
   useEffect(() => {
     if (selectedState) {
@@ -86,7 +167,7 @@ const Map = (props) => {
           });
       }
     }
-  }, [selectedState]);
+  }, [selectedState, recurseArr, getServices]);
 
   useEffect(() => {
     if (map.current) return;
@@ -124,85 +205,6 @@ const Map = (props) => {
         ", lng: " +
         map.current.getCenter().lng.toFixed(4)
     );
-  }
-
-  function recurseArr(newArr) {
-    return newArr.map((item) => {
-      if (item.length === 2) {
-        return [item[1], item[0]];
-      } else {
-        return recurseArr(item);
-      }
-    });
-  }
-
-  async function getServices(e) {
-    client
-      .query({
-        query: gql`
-          query GetServicesInState($state: String, $cursorId: String) {
-            getServicesInState(state: $state, cursorId: $cursorId) {
-              services {
-                id
-                name
-                category
-                description
-                coordinates
-                address
-                city
-                state
-                zipCode
-              }
-              count
-            }
-          }
-        `,
-        variables: {
-          state: e.target.options.name,
-          cursorId: "",
-        },
-      })
-      .then(async (result) => {
-        if (result) {
-
-          let servicesArr = result.data.getServicesInState.services;
-          // servicesArr.forEach((service) => {
-
-          for (let i = 0; i < servicesArr.length; i++) {
-            let service = servicesArr[i];
-            let marker = L.marker(service.coordinates, {
-              title: service.name,
-              icon:
-                service.category === "VA Center"
-                  ? VAIcon
-                  : service.category === "Food"
-                  ? foodIcon
-                  : houseIcon,
-            })
-              .bindPopup(
-                `<div class="card card-1"><h1 class="card-title">${service.name}</h1><h2 class="card-subtitle">${service.description}</h2><h3>${service.address}, ${service.city}, ${service.state} </h3>
-                  <div>
-                  
-                  </div>
-                  </div>`
-                // add delete button if we need to delete some items
-                // <button class="btn" type="button" onClick="deleteItem(event)" id="${service.id}">Delete</button>
-              )
-              .addTo(map.current);
-            // markerPromises.push(marker)
-
-            marker.on("click", function (e) {
-              console.log(e);
-            });
-          }
-          // });
-          // Promise.all(markerPromises).then(createdMarkers=>{
-          //   createdMarkers.forEach(marker=>{
-          //     marker.addTo(map.current);
-          //   })
-          // })
-        }
-      });
   }
 
   return (

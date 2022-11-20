@@ -2,17 +2,19 @@
 
 Vome is web application designed to connect veterans in need with useful resources. Veterans or someone providing assistance to a veteran can use the map based interface to look for available services and volunteers in their area. The application also allows people interested in helping veterans to register with the application. Helpers are asked to submit a service or skill that they are willing to provide. Once registered, veterans will be able to find helpers using the map based interface. This application is still in development with many more features planned! 
 
-## Installation
-This applications requires Mongodb and Nodejs. For instructions on running a mongodb database locally, go here:
-https://docs.mongodb.com/guides/server/install/
-To download nodejs, go here:
-https://nodejs.org/en/download/
+### ToDo
 
-## Local installation steps:
-```bash
-$ git clone https://github.com/Wolverine971/vome.git
-cd vome
-```
+
+- [x]  <del>Map
+- [x]  <del>Ingest VA center data
+- [x]  <del>Hosting- Domain- SSL
+- [ ]  Graphql endpoints
+- [ ]  Hook up veteran service signup graphql endpoint
+- [ ]  Host project
+## Installation
+This applications requires [Mongodb](https://docs.mongodb.com/guides/server/install/) and [Nodejs](https://nodejs.org/en/download/).
+
+
 ### Frontend
 1. Install the react app
 ```bash
@@ -43,17 +45,17 @@ $ npm run build:dev
 ```bash
 cd backend/seed
 ```
-Need .env file mapbox api key
+Need .env file [mapbox api key](https://docs.mapbox.com/help/getting-started/access-tokens/)
 
 GEO_KEY=mapboxApiKkey
 
 2. Seed random Veteran Services in California.  
 ```bash
-$ node seed.js
+$ node seedCaData.js
 ```
 3. Seed locations of VA Centers in the States.  
 ```bash
-$ node seedtwo.js
+$ node seedVaCenters.js
 ```
 
 ## Usage
